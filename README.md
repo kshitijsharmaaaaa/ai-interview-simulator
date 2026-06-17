@@ -60,38 +60,6 @@ server/
 └── package.json
 ```
 
-## ⚙️ Installation
-
-### Clone Repository
-
-```bash
-git clone https://github.com/YOUR_USERNAME/ai-interview-simulator.git
-```
-
-### Frontend
-
-```bash
-cd client
-npm install
-npm run dev
-```
-
-### Backend
-
-```bash
-cd server
-npm install
-npm run dev
-```
-
-### Environment Variables
-
-Create a `.env` file inside the server folder:
-
-```env
-GROQ_API_KEY=YOUR_GROQ_API_KEY
-```
-
 ## 🎯 Future Improvements
 
 * Resume Upload & Analysis
