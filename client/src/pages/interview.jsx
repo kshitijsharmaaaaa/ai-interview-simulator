@@ -1,4 +1,7 @@
-import React, { useState } from "react";
+import React, {
+  useState,
+  useEffect,
+} from "react";
 import axios from "axios";
 
 function Interview({
@@ -15,6 +18,22 @@ function Interview({
     useState("");
   const [loading, setLoading] =
     useState(false);
+
+  useEffect(() => {
+    if (question) {
+      const speech =
+        new SpeechSynthesisUtterance(
+          `Question ${questionNumber}. ${question}`
+        );
+
+      speech.rate = 1;
+      speech.pitch = 1;
+      speech.volume = 1;
+
+      window.speechSynthesis.cancel();
+      window.speechSynthesis.speak(speech);
+    }
+  }, [question, questionNumber]);
 
   const submitAnswer = async () => {
     if (!answer.trim()) {
@@ -34,14 +53,25 @@ function Interview({
       );
 
       const text =
-        response.data.evaluation;
+  response.data.evaluation;
 
-      setEvaluation(text);
+setEvaluation(text);
 
-      setEvaluations((prev) => [
-        ...prev,
-        text,
-      ]);
+// 🔊 AI Evaluation Speech
+const speech =
+  new SpeechSynthesisUtterance(text);
+
+speech.rate = 1;
+speech.pitch = 1;
+speech.volume = 1;
+
+window.speechSynthesis.cancel();
+window.speechSynthesis.speak(speech);
+
+setEvaluations((prev) => [
+  ...prev,
+  text,
+]);
 
       const match = text.match(
         /Score:\s*(\d+)\/10/i
