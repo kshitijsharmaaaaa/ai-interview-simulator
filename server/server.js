@@ -128,9 +128,66 @@ Feedback: Short constructive feedback.
     });
   }
 });
+app.post("/generate-report", async (req, res) => {
+  try {
+    const { evaluations } = req.body;
+
+    const completion =
+      await groq.chat.completions.create({
+        messages: [
+          {
+            role: "system",
+            content:
+              "You are an expert interview coach.",
+          },
+          {
+            role: "user",
+            content: `
+Based on these interview evaluations:
+
+${evaluations.join("\n\n")}
+
+Generate:
+
+Strengths:
+- point
+- point
+
+Weaknesses:
+- point
+- point
+
+Recommendations:
+- point
+- point
+
+Keep it concise and professional.
+`,
+          },
+        ],
+
+        model: "llama-3.3-70b-versatile",
+      });
+
+    const report =
+      completion.choices[0].message.content;
+
+    res.json({
+      success: true,
+      report,
+    });
+  } catch (error) {
+    console.log(error);
+
+    res.status(500).json({
+      success: false,
+      message: "Failed to generate report",
+    });
+  }
+});
 
 const PORT = 3001;
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
-});
+}); 
